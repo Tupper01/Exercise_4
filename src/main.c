@@ -35,12 +35,26 @@ int main(void)
     //Config pull up
     GPIO_InitStruct->GPIO_PuPd = GPIO_PuPd_UP;
     //Config open drain
-    GPIO_InitStruct->GPIO_Mode = GPIO_OType_OD;
+    GPIO_InitStruct->GPIO_OType = GPIO_OType_OD;
     //Config speed
-    GPIO_InitStruct->GPIO_Mode = GPIO_Speed_10MHz;
+    GPIO_InitStruct->GPIO_Speed = GPIO_Speed_10MHz;
 
+    //
     GPIO_Init(GPIOA, GPIO_InitStruct);
 
+    //Config PA15
+    GPIO_InitStruct->GPIO_Pin = GPIO_Pin_15;
+    //
+    GPIO_Init(GPIOA, GPIO_InitStruct);
+
+
+
+    //
+    I2C_InitTypeDef * I2C_InitStruct;
+    //Config I2C-mode
+    I2C_InitStruct->I2C_Mode = I2C_Mode_I2C;
+    //Config timing
+    I2C_InitStruct->I2C_Timing = 0xF0420F13;
 }
 
 
