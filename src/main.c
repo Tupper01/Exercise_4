@@ -28,8 +28,19 @@ int main(void)
     //Pointer to struct
     GPIO_InitTypeDef * GPIO_InitStruct;
 
-    //
+    //Config PA14
+    GPIO_InitStruct->GPIO_Pin = GPIO_Pin_14;
+    //Config alternate function
     GPIO_InitStruct->GPIO_Mode = GPIO_Mode_AF;
+    //Config pull up
+    GPIO_InitStruct->GPIO_PuPd = GPIO_PuPd_UP;
+    //Config open drain
+    GPIO_InitStruct->GPIO_Mode = GPIO_OType_OD;
+    //Config speed
+    GPIO_InitStruct->GPIO_Mode = GPIO_Speed_10MHz;
+
+    GPIO_Init(GPIOA, GPIO_InitStruct);
+
 }
 
 
