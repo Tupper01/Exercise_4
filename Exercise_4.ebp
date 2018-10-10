@@ -83,6 +83,7 @@
 			<Add option="-eb_start_files" />
 			<Add option="-eb_lib=n" />
 		</Linker>
+		<Unit filename="..\Digital_instrumentering\30021_io.h" />
 		<Unit filename="cmsis\arm_common_tables.h" />
 		<Unit filename="cmsis\arm_math.h" />
 		<Unit filename="cmsis\core_cm4.h" />
@@ -195,7 +196,6 @@
 		<Unit filename="..\..\Dropbox\Dokumenter\Elektroteknologi\5_semester\Digital_instrumentering\30021_io.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="..\..\Dropbox\Dokumenter\Elektroteknologi\5_semester\Digital_instrumentering\30021_io.h" />
 		<Extensions>
 			<code_completion />
 			<debugger>
