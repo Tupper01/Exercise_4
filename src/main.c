@@ -55,6 +55,14 @@ int main(void)
     I2C_InitStruct->I2C_Mode = I2C_Mode_I2C;
     //Config timing
     I2C_InitStruct->I2C_Timing = 0xF0420F13;
+    //Config own address
+    I2C_InitStruct->I2C_OwnAddress1 = 0x90;
+    //Config ACK
+    I2C_InitStruct->I2C_Ack = I2C_Ack_Enable;
+    //Config acknowledge
+    I2C_InitStruct->I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
+    //
+
 }
 
 
