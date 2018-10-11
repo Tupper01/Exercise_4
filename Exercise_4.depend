@@ -398,7 +398,7 @@
 	"stm32f30x_conf.h"
 	<stdio.h>
 
-1539299224 source:d:\dtu\digital_instrumentering\exercise_4\src\main.c
+1539299812 source:d:\dtu\digital_instrumentering\exercise_4\src\main.c
 	"stm32f30x_conf.h"
 	"30021_io.h"
 	"stm32f30x_gpio.h"
