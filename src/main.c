@@ -2,66 +2,73 @@
 #include "30021_io.h" // Input/output library for this course
 #include "stm32f30x_gpio.h"
 #include "stm32f30x_i2c.h"
+
+
+
 int main(void)
 {
     init_usb_uart( 9600 ); // Initialize USB serial emulation at 9600 baud
 
     printf("Hello World!\n"); // Show the world you are alive!
 
+    RCC->AHBENR |= RCC_AHBENR_GPIOBEN;
+    //////////////////////////////////////////////////////
+    //MODE, TYPE, SPEED, AND ALTERNATE FUNCTION:
+    //Mode register set for alternate function - pin 8 and 9
+    GPIOB->MODER &= ~GPIO_MODER_MODER8_0;
+    GPIOB->MODER |= GPIO_MODER_MODER8_1;
+    GPIOB->MODER &= ~GPIO_MODER_MODER9_0;
+    GPIOB->MODER |= GPIO_MODER_MODER9_1;
+
+    //Type register open drain
+    GPIOB->OTYPER |= GPIO_OTYPER_OT_8;
+    GPIOB->OTYPER |= GPIO_OTYPER_OT_9;
+
+    //Set speed, lowest speed
+    GPIOB->OSPEEDR &= ~GPIO_OSPEEDER_OSPEEDR8_0;
+    GPIOB->OSPEEDR &= ~GPIO_OSPEEDER_OSPEEDR9_0;
+
+    //Set pull up
+    GPIOB->PUPDR = (1<<18) | (1<<16);
+
+    //Set alternate functions for pin 8 and 9
+    GPIOB->AFR[1] = (1<<6) | (1<<2);
+
+    //////////////////////////////////////////////////////
+    //Enable I2C #1
+    RCC->APB1ENR |= RCC_APB1ENR_I2C1EN;
+    //Timing using the excel sheet
+    I2C1->TIMINGR = (uint32_t)0x0010020A;
+    //Enable peripheral
+    I2C1->CR1 |= I2C_CR1_PE;
+
+    //////////////////////////////////////////////////////
+    //Shift SADD (Slave address) 1 bit left
+    I2C1->CR2 |= (0x90 << 1);
+    //Set read/write
+    I2C1->CR2 &= ~I2C_CR2_RD_WRN;
+    //Number of bytes
+    I2C1->CR2 |= (1 << 16);
+    //Establish start condition
+    I2C1->CR2 |= I2C_CR2_START;
+//    //Confirm start condition
+//    while(I2C1->CR2 & I2C_CR2_START);
+//    //Write a byte to the transmit data register
+//        I2C1->TXDR = 0x2C;
+//    //Confirm transmit by making sure the TXDR is empty
+//    while(!(I2C1->ISR & I2C_ISR_TXE));
+//    //Establish a stop condition
+//        I2C1->CR2 |= I2C_CR2_STOP;
+//    //Confirm a stop condition
+//    while(I2C1->CR2 & I2C_CR2_STOP);
+
+
     while(1)
     {
 
     }
 
-    //Enable periphal clock
-    RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
 
-    //Enable GPIO clock
-    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
-
-    //Enable alternate function
-    GPIO_PinAFConfig(GPIOA, 14, GPIO_AF_4);
-
-    //Enable alternate function
-    GPIO_PinAFConfig(GPIOA, 15, GPIO_AF_4);
-
-    //Pointer to struct
-    GPIO_InitTypeDef * GPIO_InitStruct;
-
-    //Config PA14
-    GPIO_InitStruct->GPIO_Pin = GPIO_Pin_14;
-    //Config alternate function
-    GPIO_InitStruct->GPIO_Mode = GPIO_Mode_AF;
-    //Config pull up
-    GPIO_InitStruct->GPIO_PuPd = GPIO_PuPd_UP;
-    //Config open drain
-    GPIO_InitStruct->GPIO_OType = GPIO_OType_OD;
-    //Config speed
-    GPIO_InitStruct->GPIO_Speed = GPIO_Speed_10MHz;
-
-    //
-    GPIO_Init(GPIOA, GPIO_InitStruct);
-
-    //Config PA15
-    GPIO_InitStruct->GPIO_Pin = GPIO_Pin_15;
-    //
-    GPIO_Init(GPIOA, GPIO_InitStruct);
-
-
-
-    //
-    I2C_InitTypeDef * I2C_InitStruct;
-    //Config I2C-mode
-    I2C_InitStruct->I2C_Mode = I2C_Mode_I2C;
-    //Config timing
-    I2C_InitStruct->I2C_Timing = 0xF0420F13;
-    //Config own address
-    I2C_InitStruct->I2C_OwnAddress1 = 0x90;
-    //Config ACK
-    I2C_InitStruct->I2C_Ack = I2C_Ack_Enable;
-    //Config acknowledge
-    I2C_InitStruct->I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
-    //
 
 }
 
